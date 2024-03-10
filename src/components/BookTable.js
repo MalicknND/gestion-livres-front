@@ -2,15 +2,23 @@ import { Button } from "react-bootstrap";
 import Table from "react-bootstrap/Table";
 import BookDeleteModal from "./BookDeleteModal";
 import { useState } from "react";
+import BookDetailsModal from "./BookDetailsModal";
 
 function BookTable(props) {
   const { show, setShow, handleDelete } = props;
-
   const [bookId, setBookId] = useState(null);
+
+  const [book, setBook] = useState(null);
+  const [showDetails, setBookDetails] = useState(false);
 
   const ShowModal = (id) => {
     setBookId(id);
     setShow(true);
+  };
+
+  const showDetailsModal = (book) => {
+    setBook(book);
+    setBookDetails(true);
   };
 
   return (
@@ -21,10 +29,15 @@ function BookTable(props) {
         handleDelete={handleDelete}
         bookId={bookId}
       />
+      <BookDetailsModal
+        show={showDetails}
+        setShow={setBookDetails}
+        book={book}
+      />
       <Table striped bordered hover>
         <thead>
           <tr>
-            <th>#</th>
+            <th>Id</th>
             <th>Titre</th>
             <th>Auteur</th>
             <th>Actions</th>
@@ -41,7 +54,12 @@ function BookTable(props) {
                 <Button variant="danger" onClick={() => ShowModal(livre.id)}>
                   Supprimer
                 </Button>
-                <Button variant="secondary">Details</Button>
+                <Button
+                  variant="secondary"
+                  onClick={() => showDetailsModal(livre)}
+                >
+                  Details
+                </Button>
               </td>
             </tr>
           ))}
