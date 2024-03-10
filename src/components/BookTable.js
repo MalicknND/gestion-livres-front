@@ -5,14 +5,12 @@ import { useState } from "react";
 import BookDetailsModal from "./BookDetailsModal";
 
 function BookTable(props) {
-  const { show, setShow, handleDelete } = props;
-  const [bookId, setBookId] = useState(null);
-
+  const { show, setShow, handleDelete, handleEdit } = props;
   const [book, setBook] = useState(null);
   const [showDetails, setBookDetails] = useState(false);
 
-  const ShowModal = (id) => {
-    setBookId(id);
+  const ShowModal = (book) => {
+    setBook(book);
     setShow(true);
   };
 
@@ -27,7 +25,7 @@ function BookTable(props) {
         show={show}
         setShow={setShow}
         handleDelete={handleDelete}
-        bookId={bookId}
+        bookId={book?.id}
       />
       <BookDetailsModal
         show={showDetails}
@@ -50,8 +48,10 @@ function BookTable(props) {
               <td>{livre.titre}</td>
               <td>{livre.auteur}</td>
               <td>
-                <Button variant="primary">Modifier</Button>
-                <Button variant="danger" onClick={() => ShowModal(livre.id)}>
+                <Button variant="primary" onClick={() => handleEdit(livre)}>
+                  Modifier
+                </Button>
+                <Button variant="danger" onClick={() => ShowModal(livre)}>
                   Supprimer
                 </Button>
                 <Button

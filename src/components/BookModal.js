@@ -3,14 +3,25 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
 function BookModal(props) {
-  const { show, setShow, setTitre, setAuteur, handleSubmit } = props;
+  const {
+    show,
+    setShow,
+    titre,
+    setTitre,
+    auteur,
+    setAuteur,
+    handleSubmit,
+    currentBook,
+  } = props;
   const handleClose = () => setShow(false);
 
   return (
     <>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Ajout de livres </Modal.Title>
+          <Modal.Title>
+            {currentBook ? "Modifier le livre" : "Ajouter un livre"}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
@@ -20,6 +31,7 @@ function BookModal(props) {
                 type="text"
                 placeholder="Enter le titre"
                 onChange={(e) => setTitre(e.target.value)}
+                value={titre}
               />
             </Form.Group>
 
@@ -29,6 +41,7 @@ function BookModal(props) {
                 type="text"
                 placeholder="Entrer l'auteur"
                 onChange={(e) => setAuteur(e.target.value)}
+                value={auteur}
               />
             </Form.Group>
 

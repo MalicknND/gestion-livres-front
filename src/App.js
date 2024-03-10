@@ -6,9 +6,6 @@ import BookModal from "./components/BookModal";
 import { useState } from "react";
 
 function App() {
-  const [show, setShow] = useState(false);
-  const [showDelete, setShowDelete] = useState(false);
-  const handleShow = () => setShow(true);
   const [livres, setLivres] = useState([
     {
       id: 1,
@@ -26,15 +23,31 @@ function App() {
       auteur: "test",
     },
   ]);
-
+  const [show, setShow] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
   const [titre, setTitre] = useState("");
   const [auteur, setAuteur] = useState("");
+  const [currentBook, setCurrentBook] = useState(null);
+
+  const handleShow = () => {
+    setCurrentBook(null);
+    setShow(true);
+    setAuteur("");
+    setTitre("");
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(titre, auteur);
-    const newBook = { id: livres.length + 1, titre, auteur };
-    setLivres([...livres, newBook]);
+    if (currentBook) {
+      setLivres(
+        livres.map((book) =>
+          book.id === currentBook.id ? { ...book, titre, auteur } : book
+        )
+      );
+    } else {
+      const newBook = { id: livres.length + 1, titre, auteur };
+      setLivres([...livres, newBook]);
+    }
     setTitre("");
     setAuteur("");
     setShow(false);
@@ -43,6 +56,13 @@ function App() {
   const handleDelete = (id) => {
     setLivres(livres.filter((book) => book.id !== id));
     setShowDelete(false);
+  };
+
+  const handleEditShow = (book) => {
+    setCurrentBook(book);
+    setAuteur(book.auteur);
+    setTitre(book.titre);
+    setShow(true);
   };
 
   return (
@@ -54,6 +74,9 @@ function App() {
         setTitre={setTitre}
         setAuteur={setAuteur}
         handleSubmit={handleSubmit}
+        currentBook={currentBook}
+        titre={titre}
+        auteur={auteur}
       />
       <Container style={{ marginTop: "25px" }}>
         <Row>
@@ -72,6 +95,7 @@ function App() {
           show={showDelete}
           setShow={setShowDelete}
           handleDelete={handleDelete}
+          handleEdit={handleEditShow}
         />
       </Container>
     </div>
