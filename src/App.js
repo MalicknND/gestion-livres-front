@@ -8,12 +8,7 @@ import { useState } from "react";
 function App() {
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
-
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-
-  console.log(title, author);
-  const livres = [
+  const [livres, setLivres] = useState([
     {
       id: 1,
       titre: "Le livre",
@@ -29,7 +24,20 @@ function App() {
       titre: "Le livre3",
       auteur: "test",
     },
-  ];
+  ]);
+
+  const [titre, setTitre] = useState("");
+  const [auteur, setAuteur] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(titre, auteur);
+    const newBook = { id: livres.length + 1, titre, auteur };
+    setLivres([...livres, newBook]);
+    setTitre("");
+    setAuteur("");
+    setShow(false);
+  };
 
   return (
     <div className="App">
@@ -37,8 +45,9 @@ function App() {
       <BookModal
         show={show}
         setShow={setShow}
-        setTitle={setTitle}
-        setAuthor={setAuthor}
+        setTitre={setTitre}
+        setAuteur={setAuteur}
+        handleSubmit={handleSubmit}
       />
       <Container style={{ marginTop: "25px" }}>
         <Row>
