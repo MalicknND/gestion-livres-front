@@ -7,6 +7,7 @@ import { useState } from "react";
 
 function App() {
   const [show, setShow] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
   const handleShow = () => setShow(true);
   const [livres, setLivres] = useState([
     {
@@ -39,6 +40,11 @@ function App() {
     setShow(false);
   };
 
+  const handleDelete = (id) => {
+    setLivres(livres.filter((book) => book.id !== id));
+    setShowDelete(false);
+  };
+
   return (
     <div className="App">
       <Header />
@@ -55,17 +61,18 @@ function App() {
             <h2>Liste des livres</h2>
           </Col>
           <Col>
-            {/* <Button variant="success" size="lg" block>
-              Ajouter un livre
-            </Button> */}
-            {/* <BookModal /> */}
             <Button variant="primary" onClick={handleShow}>
               Ajouter un livre
             </Button>
           </Col>
         </Row>
         <h2>Application de gestions de livres</h2>
-        <BookTable livres={livres} />
+        <BookTable
+          livres={livres}
+          show={showDelete}
+          setShow={setShowDelete}
+          handleDelete={handleDelete}
+        />
       </Container>
     </div>
   );
