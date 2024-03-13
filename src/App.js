@@ -3,26 +3,11 @@ import { Button, Col, Container, Row } from "react-bootstrap";
 import Header from "./components/Header";
 import BookTable from "./components/BookTable";
 import BookModal from "./components/BookModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import api from "./api";
 
 function App() {
-  const [livres, setLivres] = useState([
-    {
-      id: 1,
-      titre: "Le livre",
-      auteur: "test",
-    },
-    {
-      id: 2,
-      titre: "Le livre2",
-      auteur: "test",
-    },
-    {
-      id: 3,
-      titre: "Le livre3",
-      auteur: "test",
-    },
-  ]);
+  const [livres, setLivres] = useState([]);
   const [show, setShow] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
   const [titre, setTitre] = useState("");
@@ -35,6 +20,18 @@ function App() {
     setAuteur("");
     setTitre("");
   };
+
+  // useEffect pour recuperer les livres dans la base de données
+  useEffect(() => {
+    api
+      .get("/livres")
+      .then((response) => {
+        setLivres(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
