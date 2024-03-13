@@ -64,7 +64,16 @@ function App() {
   };
 
   const handleDelete = (id) => {
-    setLivres(livres.filter((book) => book.id !== id));
+    // setLivres(livres.filter((book) => book.id !== id));
+    api
+      .delete(`/livres/${id}`)
+      .then((res) => {
+        setLivres(livres.filter((book) => book.id !== res.data.id));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
     setShowDelete(false);
   };
 
