@@ -36,13 +36,26 @@ function App() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (currentBook) {
-      setLivres(
-        livres.map((book) =>
-          book.id === currentBook.id ? { ...book, titre, auteur } : book
-        )
-      );
+      api
+        .put(`/livres/${currentBook.id}`, { ...currentBook, titre, auteur })
+        .then((res) => {
+          setLivres(
+            livres.map((book) => (book.id === res.data.id ? res.data : book))
+          );
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     } else {
       const newBook = { id: livres.length + 1, titre, auteur };
+      api
+        .post("/livres", newBook)
+        .then((res) => {
+          setLivres([...livres, res.data]);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
       setLivres([...livres, newBook]);
     }
     setTitre("");
